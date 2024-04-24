@@ -1,1 +1,41 @@
+from flask import Flask, render_template, request
+import pandas as pd
+app = Flask(__name__)
+@app.route('/')
+def upload_file():
+    return render_template('upload.html')
+@app.route('/uploader', methods=['GET', 'POST'])
+def upload_file_and_display_df():
+    if request.method == 'POST':
+        f = request.files['file']
+        # You can add a check here to ensure the file is an Excel file
+        df = pd.read_excel(f)
+        # Convert DataFrame to HTML table for easy display
+        return df.to_html()
+if __name__ == '__main__':
+    app.run(debug=True, port=12345)
+
+
+
+
+
+14:21
+this is the file html also :slightly_smiling_face:
+14:21
+html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Excel File Contents</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Excel File Contents</h2>
+        {% for table in tables %}
+            {{ table|safe }}
+        {% endfor %}
+    </div>
+</body>
+</html>
 
